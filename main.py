@@ -198,8 +198,6 @@ def process_batch(conn, assets, first_run, fist_run_min_create_date):
 def main():
     print("Starting...")
     conn = init_db()
-    print ("Connecting to immich database...")
-    pg = pg_conn()
     print("Started")
 
     firstrun_complete = get_state(conn, "firstrun_complete") == "1"
@@ -210,9 +208,16 @@ def main():
 
     try:
         while True:
+            pg = None
             try:
+                pg = pg_conn()
                 assets = fetch_assets(pg, last_sync)
 
+            finally:
+                if pg is not None:
+                    pg.close()
+
+            try:
                 if assets:
                     new_sync = process_batch(
                         conn,
@@ -237,7 +242,6 @@ def main():
 
     finally:
         conn.close()
-        pg.close()
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 services:
-  immich-hardlink-photo:
-    image: ghcr.io/vmirage/immich-hardlink-photo:latest
-    container_name: immich_hardlink_photo
+  immich-hardlink-library:
+    image: ghcr.io/vmirage/immich-hardlink-library:latest
+    container_name: immich_hardlink_library
     environment:
       PG_HOST: database
       PG_PORT: "5432"
